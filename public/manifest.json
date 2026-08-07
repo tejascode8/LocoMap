@@ -1,0 +1,33 @@
+{
+  "name": "LocoMap - Live Train Tracker",
+  "short_name": "LocoMap",
+  "description": "Real-time Indian Railways tracking with interactive maps, delay analytics, and weather intelligence.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/LocoMap_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Trains",
+      "short_name": "Search",
+      "url": "/?search=1",
+      "icons": [{ "src": "/LocoMap_icon.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "My Favorites",
+      "short_name": "Favorites",
+      "url": "/favorites",
+      "icons": [{ "src": "/LocoMap_icon.png", "sizes": "512x512" }]
+    }
+  ],
+  "categories": ["travel", "navigation", "utilities"]
+}
