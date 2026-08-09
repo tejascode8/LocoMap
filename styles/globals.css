@@ -74,6 +74,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased selection:bg-rail-blue/20 selection:text-rail-blue;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

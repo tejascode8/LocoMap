@@ -61,18 +61,18 @@ export default function MapView({ journey, className }: MapViewProps) {
     if (!mapContainerRef.current) return;
 
     const styleUrl = MAPTILER_KEY
-      ? `https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`
+      ? `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}`
       : {
           version: 8 as const,
           sources: {
-            'carto-light': {
+            'carto-dark': {
               type: 'raster' as const,
-              tiles: ['https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
+              tiles: ['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
               tileSize: 256,
               attribution: '© OpenStreetMap © CARTO',
             },
           },
-          layers: [{ id: 'carto-layer', type: 'raster' as const, source: 'carto-light' }],
+          layers: [{ id: 'carto-layer', type: 'raster' as const, source: 'carto-dark' }],
         };
 
     const center: [number, number] = [
@@ -252,7 +252,7 @@ export default function MapView({ journey, className }: MapViewProps) {
             title={title}
             className={cn(
               'glass-panel flex h-10 w-10 items-center justify-center rounded-xl shadow-md transition-all hover:scale-105',
-              isActive ? 'bg-rail-blue text-white shadow-glow border-rail-blue' : 'text-slate-700 light:text-slate-200'
+              isActive ? 'bg-rail-blue text-white shadow-glow border-rail-blue' : 'text-slate-700 dark:text-slate-200'
             )}
           >
             <Icon className="h-4 w-4" />
