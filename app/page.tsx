@@ -179,17 +179,17 @@ export default function HomePage() {
   return (
     <div className="space-y-16 py-4 md:py-8 max-w-6xl mx-auto px-4 font-sans antialiased">
       {/* ─── 1. HERO SECTION (Apple Product Announcement Style) ─────────────── */}
-      <section className="relative rounded-[2.5rem] bg-black text-white p-8 sm:p-14 md:p-20 text-center shadow-2xl border border-white/10">
+      <section className="relative rounded-[2rem] sm:rounded-[2.5rem] bg-black text-white p-6 sm:p-14 md:p-20 text-center shadow-2xl border border-white/10 overflow-hidden">
         
         {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute inset-0 pointer-events-none rounded-[2.5rem] overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden">
           <motion.div
             animate={{
               opacity: [0.3, 0.6, 0.3],
               scale: [1, 1.15, 1],
             }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-gradient-to-b from-blue-600/30 via-indigo-600/10 to-transparent blur-[120px]"
+            className="absolute -top-40 left-1/2 -translate-x-1/2 w-[320px] sm:w-[600px] h-[250px] sm:h-[400px] rounded-full bg-gradient-to-b from-blue-600/30 via-indigo-600/10 to-transparent blur-[100px] sm:blur-[120px]"
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:32px_32px]" />
           <WaveParticles />
@@ -203,33 +203,33 @@ export default function HomePage() {
         >
 
           {/* Headline - Apple Display Typography */}
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight text-white leading-[1.05]">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-[1.05]">
             Track trains<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-sky-400">
               Pro precision
             </span>
           </h1>
 
-          <p className="mt-6 text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto font-normal leading-relaxed">
+          <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg lg:text-xl text-zinc-400 max-w-xl mx-auto font-normal leading-relaxed">
             Sub-minute GPS tracking, route weather intelligence, and terrain elevation graphics for Indian Railways
           </p>
 
-          {/* ─── Apple Spotlight-Style Search Bar (White Background & Black Text) ─── */}
-          <div className="mt-10 relative max-w-2xl mx-auto text-left z-20">
+          {/* ─── Apple Spotlight-Style Search Bar ─── */}
+          <div className="mt-8 sm:mt-10 relative max-w-2xl mx-auto text-left z-20">
             <motion.div
               animate={{ scale: isSearchOpen ? 1.01 : 1 }}
               transition={appleSpring}
               className={cn(
-                'relative flex items-center gap-3.5 rounded-2xl px-5 py-4 transition-all duration-300 backdrop-blur-md border shadow-[0_20px_50px_rgba(0,0,0,0.65)]',
+                'relative flex items-center gap-2.5 sm:gap-3.5 rounded-2xl px-4 py-3 sm:px-5 sm:py-4 transition-all duration-300 backdrop-blur-md border shadow-[0_20px_50px_rgba(0,0,0,0.65)]',
                 isSearchOpen
                   ? 'bg-white border-blue-500 ring-4 ring-blue-500/25 shadow-[0_0_50px_rgba(59,130,246,0.15)]'
-                  : 'bg-white/95 border-slate-200/80 hover:border-slate-350 hover:bg-white shadow-[0_15px_35px_rgba(0,0,0,0.35)]'
+                  : 'bg-white/95 border-slate-200/80 hover:border-slate-300 hover:bg-white shadow-[0_15px_35px_rgba(0,0,0,0.35)]'
               )}
             >
               {isLoading && inputValue ? (
-                <Loader2 className="h-6 w-6 flex-shrink-0 text-blue-500 animate-spin" />
+                <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 text-blue-500 animate-spin" />
               ) : (
-                <Search className={cn("h-6 w-6 flex-shrink-0 transition-colors duration-300", isSearchOpen ? "text-blue-500" : "text-slate-400")} />
+                <Search className={cn("h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 transition-colors duration-300", isSearchOpen ? "text-blue-500" : "text-slate-400")} />
               )}
 
               <input
@@ -242,8 +242,8 @@ export default function HomePage() {
                 }}
                 onFocus={() => setIsSearchOpen(true)}
                 onKeyDown={handleInputKeyDown}
-                placeholder="Search train by number (12951) or name (Rajdhani)..."
-                className="w-full bg-transparent text-base sm:text-lg font-medium text-black placeholder-slate-400 outline-none"
+                placeholder="Search train name or number..."
+                className="w-full bg-transparent text-sm sm:text-base md:text-lg font-medium text-black placeholder-slate-455 outline-none"
               />
 
               {inputValue && (
@@ -251,9 +251,9 @@ export default function HomePage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => { setInputValue(''); setIsSearchOpen(false); }}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-black transition-colors"
+                  className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-black transition-colors"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3.5 w-3.5" />
                 </motion.button>
               )}
             </motion.div>
@@ -267,7 +267,7 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.98 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute left-0 right-0 top-full mt-3 z-50 max-h-[280px] sm:max-h-[380px] overflow-y-auto rounded-2xl border border-white/15 bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-3xl divide-y divide-zinc-800/60"
+                  className="absolute left-0 right-0 top-full mt-3 z-50 max-h-[280px] sm:max-h-[380px] overflow-y-auto rounded-2xl border border-white/15 bg-zinc-900/95 p-2 sm:p-3 shadow-2xl backdrop-blur-3xl divide-y divide-zinc-800/60"
                 >
                   {/* Error state */}
                   {isError && (
@@ -354,7 +354,7 @@ export default function HomePage() {
           </div>
 
           {/* Quick Trending Chips */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm">
+          <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs md:text-sm">
             <span className="text-zinc-400 font-medium mr-1">Suggested:</span>
             {['12951', '22436', '12301', '12621', '12002'].map((num) => (
               <motion.button
@@ -366,7 +366,7 @@ export default function HomePage() {
                   setIsSearchOpen(true);
                   inputRef.current?.focus();
                 }}
-                className="rounded-full bg-zinc-900 border border-zinc-700/80 px-3.5 py-1.5 font-mono font-semibold text-zinc-300 hover:text-white hover:border-blue-500/60 hover:bg-blue-500/10 transition-all shadow-sm"
+                className="rounded-full bg-zinc-900 border border-zinc-700/80 px-3 py-1 sm:px-3.5 sm:py-1.5 font-mono font-semibold text-zinc-300 hover:text-white hover:border-blue-500/60 hover:bg-blue-500/10 transition-all shadow-sm"
               >
                 #{num}
               </motion.button>
