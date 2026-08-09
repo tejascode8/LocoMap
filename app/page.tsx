@@ -23,6 +23,96 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
+const WaveParticles = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let width = (canvas.width = canvas.offsetWidth);
+    let height = (canvas.height = canvas.offsetHeight);
+
+    const handleResize = () => {
+      if (canvas) {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Wave parameters
+    const SEPARATION = 22;
+    const AMOUNTX = 50;
+    const AMOUNTY = 30;
+    let count = 0;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Gradient color matching theme (blue/purple dots) - increased opacity
+      ctx.fillStyle = 'rgba(96, 165, 250, 0.55)'; 
+
+      for (let ix = 0; ix < AMOUNTX; ix++) {
+        for (let iy = 0; iy < AMOUNTY; iy++) {
+          // Calculate 3D coordinate wave - increased wave amplitude height
+          const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
+          const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
+          const y = (Math.sin((ix + count) * 0.25) * 25) + (Math.sin((iy + count) * 0.45) * 18);
+
+          // Rotate Y and X slightly for a 3D perspective angle
+          const angleY = 0.45;
+          const angleX = 0.55;
+
+          const cosY = Math.cos(angleY);
+          const sinY = Math.sin(angleY);
+          const cosX = Math.cos(angleX);
+          const sinX = Math.sin(angleX);
+
+          // Rotate Y
+          let x1 = x * cosY - z * sinY;
+          let z1 = z * cosY + x * sinY;
+          // Rotate X
+          let y2 = y * cosX - z1 * sinX;
+          let z2 = z1 * cosX + y * sinX;
+
+          // Projection
+          const focalLength = 360;
+          const scale = focalLength / (focalLength + z2);
+          const screenX = width / 2 + x1 * scale;
+          const screenY = height / 1.7 + y2 * scale; // Center vertically slightly lower
+
+          // Render dot if within boundary
+          if (screenX >= 0 && screenX <= width && screenY >= 0 && screenY <= height) {
+            ctx.beginPath();
+            // Increased particle size
+            const size = Math.max(0.7, 2.3 * scale);
+            ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      count += 0.022;
+      animationFrameId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Increased container opacity
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-70 dark:opacity-85" />;
+};
+
+
 export default function HomePage() {
   const router = useRouter();
   const { recentSearches, addRecentSearch, clearRecentSearches } = useSearchStore();
@@ -102,6 +192,7 @@ export default function HomePage() {
             className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-gradient-to-b from-blue-600/30 via-indigo-600/10 to-transparent blur-[120px]"
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:32px_32px]" />
+          <WaveParticles />
         </div>
 
         <motion.div
@@ -123,22 +214,22 @@ export default function HomePage() {
             Sub-minute GPS tracking, route weather intelligence, and terrain elevation graphics for Indian Railways
           </p>
 
-          {/* ─── Apple Spotlight-Style Search Bar ─── */}
-          <div className="mt-10 relative max-w-2xl mx-auto text-left">
+          {/* ─── Apple Spotlight-Style Search Bar (White Background & Black Text) ─── */}
+          <div className="mt-10 relative max-w-2xl mx-auto text-left z-20">
             <motion.div
               animate={{ scale: isSearchOpen ? 1.01 : 1 }}
               transition={appleSpring}
               className={cn(
-                'relative flex items-center gap-3.5 rounded-2xl px-5 py-4 transition-all duration-300 backdrop-blur-3xl border shadow-2xl',
+                'relative flex items-center gap-3.5 rounded-2xl px-5 py-4 transition-all duration-300 backdrop-blur-md border shadow-[0_20px_50px_rgba(0,0,0,0.65)]',
                 isSearchOpen
-                  ? 'bg-zinc-900/95 border-blue-500/80 ring-4 ring-blue-500/20 shadow-[0_0_50px_rgba(59,130,246,0.3)]'
-                  : 'bg-zinc-900/80 border-white/15 hover:border-white/30 hover:bg-zinc-900/90'
+                  ? 'bg-white border-blue-500 ring-4 ring-blue-500/25 shadow-[0_0_50px_rgba(59,130,246,0.15)]'
+                  : 'bg-white/95 border-slate-200/80 hover:border-slate-350 hover:bg-white shadow-[0_15px_35px_rgba(0,0,0,0.35)]'
               )}
             >
               {isLoading && inputValue ? (
-                <Loader2 className="h-6 w-6 flex-shrink-0 text-blue-400 animate-spin" />
+                <Loader2 className="h-6 w-6 flex-shrink-0 text-blue-500 animate-spin" />
               ) : (
-                <Search className={cn("h-6 w-6 flex-shrink-0 transition-colors duration-300", isSearchOpen ? "text-blue-400" : "text-zinc-400")} />
+                <Search className={cn("h-6 w-6 flex-shrink-0 transition-colors duration-300", isSearchOpen ? "text-blue-500" : "text-slate-400")} />
               )}
 
               <input
@@ -152,7 +243,7 @@ export default function HomePage() {
                 onFocus={() => setIsSearchOpen(true)}
                 onKeyDown={handleInputKeyDown}
                 placeholder="Search train by number (12951) or name (Rajdhani)..."
-                className="w-full bg-transparent text-base sm:text-lg font-medium text-white placeholder-zinc-500 outline-none"
+                className="w-full bg-transparent text-base sm:text-lg font-medium text-black placeholder-slate-400 outline-none"
               />
 
               {inputValue && (
@@ -160,7 +251,7 @@ export default function HomePage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => { setInputValue(''); setIsSearchOpen(false); }}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-black transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </motion.button>
