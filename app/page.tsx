@@ -672,8 +672,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="rounded-[2.5rem] bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white border border-white/10 p-4 shadow-2xl">
-        <div className="cursor-pointer grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="rounded-[2.5rem] bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white border border-white/10 p-5 shadow-2xl">
+        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'Active Trains Monitored', value: '14,000+', icon: Train, color: 'text-blue-600 group-hover:text-blue-400', glow: 'bg-blue-500/10', textDefault: 'text-blue-600', textHover: 'group-hover:text-blue-400' },
             { label: 'Live Data Latency', value: '< 30 Sec', icon: Gauge, color: 'text-emerald-600 group-hover:text-emerald-400', glow: 'bg-emerald-500/10', textDefault: 'text-emerald-600', textHover: 'group-hover:text-emerald-400' },
@@ -694,13 +694,13 @@ export default function HomePage() {
                 <div className={`absolute inset-0 rounded-2xl ${stat.glow} blur-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
                 {/* Card Header/Icon */}
-                <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-zinc-900 group-hover:border-zinc-800 transition-all ${stat.color} shadow-inner`}>
+                <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-900 dark:border-slate-800 group-hover:bg-zinc-900 group-hover:border-zinc-800 transition-all ${stat.color} shadow-inner`}>
                   <StatIcon className="h-4.5 w-4.5" />
                 </div>
 
                 {/* Value & Label */}
-                <div className="space-y-0.5 text-left relative z-10 min-w-0">
-                  <span className={`text-lg sm:text-xl font-extrabold tracking-tight ${stat.textDefault} ${stat.textHover} transition-colors duration-500 block truncate`}>
+                <div className="space-y-0.5 text-left relative z-10 min-w-0 flex-1">
+                  <span className={`text-base sm:text-lg font-extrabold tracking-tight ${stat.textDefault} ${stat.textHover} transition-colors duration-500 block truncate`}>
                     {stat.value}
                   </span>
                   <p className="text-[9px] font-mono font-bold tracking-widest text-slate-500 group-hover:text-zinc-400 transition-colors duration-500 uppercase truncate">
