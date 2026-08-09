@@ -139,8 +139,8 @@ export function AnalyticsDashboard({ journey }: AnalyticsDashboardProps) {
               </div>
             </div>
 
-            {/* Delay Bars List Wrapper */}
-            <div className="relative space-y-2 pt-2">
+            {/* Delay Bars List Wrapper (Scrollable after 5 stations) */}
+            <div className="relative max-h-[195px] overflow-y-auto scrollbar-none pr-1 scroll-smooth">
               {/* Background Grid markers */}
               <div className="absolute inset-y-0 left-[76px] right-[68px] pointer-events-none flex justify-between">
                 <div className="w-[1px] h-full border-r border-slate-200/40 dark:border-slate-800/40 border-dashed" />
@@ -148,34 +148,36 @@ export function AnalyticsDashboard({ journey }: AnalyticsDashboardProps) {
                 <div className="w-[1px] h-full border-r border-slate-200/40 dark:border-slate-800/40 border-dashed" />
               </div>
 
-              {delayData.slice(0, 12).map((d, i) => {
-                const widthPct = maxDelay > 0 ? Math.round((d.delayMinutes / maxDelay) * 100) : 0;
-                const barColor =
-                  d.delayMinutes === 0
-                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
-                    : d.delayMinutes < 15
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-400'
-                    : 'bg-gradient-to-r from-rose-500 to-rose-400';
+              <div className="space-y-2 pt-2">
+                {delayData.map((d, i) => {
+                  const widthPct = maxDelay > 0 ? Math.round((d.delayMinutes / maxDelay) * 100) : 0;
+                  const barColor =
+                    d.delayMinutes === 0
+                      ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
+                      : d.delayMinutes < 15
+                      ? 'bg-gradient-to-r from-amber-500 to-amber-400'
+                      : 'bg-gradient-to-r from-rose-500 to-rose-400';
 
-                return (
-                  <div key={i} className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-all duration-200 group relative z-10">
-                    <span className="w-16 truncate text-xs text-slate-500 dark:text-slate-400 text-right font-mono font-bold flex-shrink-0">
-                      {d.stationCode}
-                    </span>
-                    <div className="flex-1 h-2.5 rounded-full bg-slate-100 dark:bg-slate-900/60 overflow-hidden border border-slate-200/20 dark:border-slate-800/20">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${Math.max(widthPct, d.delayMinutes === 0 ? 4 : 0)}%` }}
-                        transition={{ duration: 0.7, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                        className={cn('h-full rounded-full', barColor)}
-                      />
+                  return (
+                    <div key={i} className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-all duration-200 group relative z-10">
+                      <span className="w-16 truncate text-xs text-slate-500 dark:text-slate-400 text-right font-mono font-bold flex-shrink-0">
+                        {d.stationCode}
+                      </span>
+                      <div className="flex-1 h-2.5 rounded-full bg-slate-100 dark:bg-slate-900/60 overflow-hidden border border-slate-200/20 dark:border-slate-800/20">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.max(widthPct, d.delayMinutes === 0 ? 4 : 0)}%` }}
+                          transition={{ duration: 0.7, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                          className={cn('h-full rounded-full', barColor)}
+                        />
+                      </div>
+                      <span className="w-14 text-xs font-mono font-bold text-right flex-shrink-0 text-slate-700 dark:text-slate-200">
+                        {d.delayMinutes > 0 ? `+${d.delayMinutes}m` : 'On time'}
+                      </span>
                     </div>
-                    <span className="w-14 text-xs font-mono font-bold text-right flex-shrink-0 text-slate-700 dark:text-slate-200">
-                      {d.delayMinutes > 0 ? `+${d.delayMinutes}m` : 'On time'}
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         ) : (

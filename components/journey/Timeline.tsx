@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CheckCircle2, Circle, Radio, Clock, Navigation } from 'lucide-react';
 import { Station } from '@/types/train';
 import { formatDelay } from '@/utils/format';
@@ -13,6 +13,21 @@ interface TimelineProps {
 }
 
 export function Timeline({ stations, currentStationCode, className }: TimelineProps) {
+  const currentStationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentStationRef.current) {
+        currentStationRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      }
+    }, 120);
+    return () => clearTimeout(timer);
+  }, [currentStationCode, stations]);
+
   return (
     <div className={cn('glass-panel rounded-3xl p-6 shadow-glass', className)}>
       <div className="flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800/80 pb-4 flex-shrink-0">
@@ -33,7 +48,11 @@ export function Timeline({ stations, currentStationCode, className }: TimelinePr
             const delayInfo = formatDelay(st.delayMinutes);
 
             return (
-              <div key={st.code + idx} className="relative flex items-start justify-between gap-4">
+              <div
+                key={st.code + idx}
+                ref={isCurrent ? currentStationRef : undefined}
+                className="relative flex items-start justify-between gap-4"
+              >
                 {/* Custom Timeline Dot Marker */}
                 <div className="absolute -left-6 top-0.5 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-background">
                   {isPassed && (

@@ -74,7 +74,7 @@ export function JourneyCard({
           </div>
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Current / Last Station
+              Current Station
             </span>
             <p className="font-semibold text-slate-900 dark:text-white">
               {journey.currentStation?.name || journey.previousStation?.name || 'In Transit'}

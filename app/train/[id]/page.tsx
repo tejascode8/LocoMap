@@ -207,19 +207,19 @@ export default function TrainJourneyPage({ params }: { params: { id: string } })
       )}
 
       {/* ─── Tab Selector ─── */}
-      <div className="flex items-center gap-1.5 rounded-2xl glass-panel p-1.5 shadow-glass w-fit flex-wrap">
+      <div className="grid grid-cols-3 sm:flex items-center gap-1 sm:gap-1.5 rounded-2xl glass-panel p-1.5 shadow-glass w-full sm:w-fit">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => setActiveTab(id)}
             className={cn(
-              'flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all duration-200 whitespace-nowrap',
+              'flex items-center justify-center gap-1 sm:gap-2 rounded-xl px-1 sm:px-4 py-2 text-[10px] sm:text-xs font-semibold transition-all duration-200 whitespace-nowrap',
               activeTab === id
                 ? 'bg-rail-blue text-white shadow-glow'
                 : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
             )}
           >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon className="h-3.5 w-3.5 flex-shrink-0" />
             <span>{label}</span>
           </button>
         ))}
@@ -242,6 +242,7 @@ export default function TrainJourneyPage({ params }: { params: { id: string } })
         {/* Route Timeline */}
         <div className="lg:col-span-5 xl:col-span-4 max-h-[480px] overflow-y-auto rounded-3xl glass-panel shadow-glass scroll-smooth scrollbar-none">
           <Timeline
+            key={journey.lastUpdated}
             stations={journey.stations}
             currentStationCode={journey.currentStation?.code}
             className="border-none shadow-none bg-transparent rounded-none shadow-none p-6"
