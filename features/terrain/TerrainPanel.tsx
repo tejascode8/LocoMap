@@ -1,13 +1,24 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { Mountain, Loader2, MapPin } from 'lucide-react';
+import { Mountain, Loader2, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TerrainFeature } from '@/lib/overpass';
 import { TerrainCard } from './TerrainCard';
+import { motion } from 'framer-motion';
 
 interface TerrainPanelProps {
   trainId: string;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04
+    }
+  }
+};
 
 export function TerrainPanel({ trainId }: TerrainPanelProps) {
   const [features, setFeatures] = useState<TerrainFeature[]>([]);
@@ -36,12 +47,20 @@ export function TerrainPanel({ trainId }: TerrainPanelProps) {
     load();
   }, [trainId]);
 
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft } = scrollRef.current;
+      const scrollAmount = 320;
+      const targetScroll = direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
+      scrollRef.current.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 font-bold text-lg text-slate-900 dark:text-white">
-        <Mountain className="h-5 w-5 text-emerald-500" />
+        <Mountain className="h-5 w-5 text-emerald-500 animate-pulse" />
         <span>Terrain & Points of Interest</span>
-        <span className="ml-auto text-xs font-normal text-slate-400">via Overpass API</span>
       </div>
 
       {loading && (
@@ -65,14 +84,37 @@ export function TerrainPanel({ trainId }: TerrainPanelProps) {
       )}
 
       {!loading && features.length > 0 && (
-        <div
-          ref={scrollRef}
-          className="flex gap-3 overflow-x-auto pb-3"
-          style={{ scrollbarWidth: 'thin' }}
-        >
-          {features.map((f, i) => (
-            <TerrainCard key={`${f.type}-${f.name}-${i}`} feature={f} />
-          ))}
+        <div className="relative group/panel">
+          {/* Left Navigation Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800/80 flex items-center justify-center text-slate-700 dark:text-slate-200 shadow-lg opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 hover:scale-105 active:scale-95 hidden md:flex"
+            aria-label="Scroll Left"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          {/* Right Navigation Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800/80 flex items-center justify-center text-slate-700 dark:text-slate-200 shadow-lg opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 hover:scale-105 active:scale-95 hidden md:flex"
+            aria-label="Scroll Right"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Cards carousel wrapper with scrollbar-none */}
+          <motion.div
+            ref={scrollRef}
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="flex gap-4 overflow-x-auto pb-4 scroll-smooth scrollbar-none snap-x"
+          >
+            {features.map((f, i) => (
+              <TerrainCard key={`${f.type}-${f.name}-${i}`} feature={f} />
+            ))}
+          </motion.div>
         </div>
       )}
     </div>

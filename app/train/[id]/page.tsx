@@ -172,12 +172,6 @@ export default function TrainJourneyPage({ params }: { params: { id: string } })
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Status badge */}
-          <span className={cn('inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold', statusCfg.color)}>
-            <span className={cn('h-1.5 w-1.5 rounded-full', statusCfg.dot)} />
-            {statusCfg.label}
-          </span>
-
           {/* Favorite */}
           <FavoriteButton train={trainForFavorite} />
 
@@ -246,10 +240,11 @@ export default function TrainJourneyPage({ params }: { params: { id: string } })
         </div>
 
         {/* Route Timeline */}
-        <div className="lg:col-span-5 xl:col-span-4">
+        <div className="lg:col-span-5 xl:col-span-4 max-h-[480px] overflow-y-auto rounded-3xl glass-panel shadow-glass scroll-smooth scrollbar-none">
           <Timeline
             stations={journey.stations}
             currentStationCode={journey.currentStation?.code}
+            className="border-none shadow-none bg-transparent rounded-none shadow-none p-6"
           />
         </div>
       </div>

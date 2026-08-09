@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { CheckCircle2, Circle, Radio, Clock } from 'lucide-react';
+import { CheckCircle2, Circle, Radio, Clock, Navigation } from 'lucide-react';
 import { Station } from '@/types/train';
 import { formatDelay } from '@/utils/format';
 import { cn } from '@/utils/cn';
@@ -15,9 +15,14 @@ interface TimelineProps {
 export function Timeline({ stations, currentStationCode, className }: TimelineProps) {
   return (
     <div className={cn('glass-panel rounded-3xl p-6 shadow-glass', className)}>
-      <h3 className="mb-6 text-lg font-bold text-slate-900 dark:text-white">
-        Station Route Timeline
-      </h3>
+      <div className="flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800/80 pb-4 flex-shrink-0">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-rail-blue/10 text-rail-blue">
+          <Navigation className="h-4 w-4 rotate-45" />
+        </div>
+        <h3 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Station Route Timeline
+        </h3>
+      </div>
 
       <div className="relative pl-6 before:absolute before:bottom-3 before:left-3 before:top-3 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
         <div className="space-y-6">

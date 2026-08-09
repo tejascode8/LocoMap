@@ -395,13 +395,14 @@ export default function HomePage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth scrollbar-none snap-x px-1 py-1 w-full">
             {recentSearches.map((train, i) => (
               <motion.div
                 key={train.id || train.number}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="flex-shrink-0 w-[285px] sm:w-[320px] snap-start"
               >
                 <Link
                   href={`/train/${train.number}`}
